@@ -186,12 +186,12 @@ class Controller:
         self.cmd[2] = self.remote_controller.rx * -1
 
         num_actions = self.config.num_actions
-        self.obs[:3] = ang_vel
-        self.obs[3:6] = gravity_orientation
+        self.obs[:3] = ang_vel # base angular velocity from IMU
+        self.obs[3:6] = gravity_orientation # from IMU
         self.obs[6:9] = self.cmd * self.config.cmd_scale * self.config.max_cmd
         self.obs[9 : 9 + num_actions] = qj_obs
-        self.obs[9 + num_actions : 9 + num_actions * 2] = dqj_obs
-        self.obs[9 + num_actions * 2 : 9 + num_actions * 3] = self.action
+        self.obs[9 + num_actions : 9 + num_actions * 2] = dqj_obs # joint speed
+        self.obs[9 + num_actions * 2 : 9 + num_actions * 3] = self.action # previous action
         self.obs[9 + num_actions * 3] = sin_phase
         self.obs[9 + num_actions * 3 + 1] = cos_phase
 
